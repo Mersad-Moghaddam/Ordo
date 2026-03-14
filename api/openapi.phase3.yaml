@@ -1,0 +1,23 @@
+openapi: 3.0.3
+info:
+  title: Ordo API
+  version: 0.4.0
+paths:
+  /api/v1/tasks:
+    post:
+      summary: Create task and persist outbox event
+      responses:
+        '201':
+          description: Task created
+  /api/v1/tasks/{taskId}/status:
+    patch:
+      summary: Update task status and persist outbox event
+      responses:
+        '204':
+          description: Task status updated
+  /api/v1/projects/{projectId}/tasks:
+    get:
+      summary: List tasks by project
+      responses:
+        '200':
+          description: Task page result
