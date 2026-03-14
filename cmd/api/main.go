@@ -32,7 +32,12 @@ func runApplication() error {
 	if loggerError != nil {
 		return fmt.Errorf("logger failure: %w", loggerError)
 	}
-	defer synchronizeLogger(applicationLogger)
+	defer func() {
+		synchronizationError := applicationLogger.Sync()
+		if synchronizationError != nil {
+			_, _ = os.Stderr.WriteString(synchronizationError.Error())
+		}
+	}()
 
 	applicationServer := deliveryhttp.NewServer(applicationConfiguration.HTTPPort, applicationLogger)
 	requestContext, cancelFunction := signal.NotifyContext(context.Background(), syscall.SIGINT, syscall.SIGTERM)
