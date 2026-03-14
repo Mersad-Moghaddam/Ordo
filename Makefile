@@ -1,5 +1,6 @@
 GO_PACKAGES=$(shell go list ./...)
 
+.PHONY: run test revive migrate sqlc tidy benchmark
 .PHONY: run test revive migrate sqlc tidy
 
 run:
@@ -19,3 +20,6 @@ sqlc:
 
 tidy:
 	go mod tidy
+
+benchmark:
+	go test ./internal/usecase/platform -bench=. -benchmem

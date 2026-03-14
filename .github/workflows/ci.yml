@@ -6,6 +6,7 @@ on:
   pull_request:
 
 jobs:
+  test-lint-benchmark:
   test-and-lint:
     runs-on: ubuntu-latest
     steps:
@@ -14,6 +15,9 @@ jobs:
         with:
           go-version-file: go.mod
       - name: Install revive
+        run: |
+          go install github.com/mgechev/revive@latest
+          echo "$(go env GOPATH)/bin" >> $GITHUB_PATH
         run: go install github.com/mgechev/revive@latest
       - name: Download dependencies
         run: go mod download
@@ -21,3 +25,5 @@ jobs:
         run: make test
       - name: Run revive
         run: make revive
+      - name: Run benchmarks
+        run: make benchmark
