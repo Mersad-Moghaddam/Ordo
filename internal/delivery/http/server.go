@@ -29,6 +29,10 @@ func NewServer(applicationPort int, applicationLog *zap.Logger) *Server {
 	return &Server{fiberApplication: fiberApplication, applicationPort: applicationPort, applicationLog: applicationLog}
 }
 
+func (applicationServer *Server) Application() *fiber.App {
+	return applicationServer.fiberApplication
+}
+
 func (applicationServer *Server) Start() error {
 	applicationAddress := fmt.Sprintf(":%d", applicationServer.applicationPort)
 	applicationServer.applicationLog.Info("starting fiber server", zap.String("address", applicationAddress))

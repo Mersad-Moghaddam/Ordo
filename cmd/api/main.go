@@ -9,6 +9,18 @@ import (
 	"syscall"
 
 	deliveryhttp "github.com/ordo/backend/internal/delivery/http"
+	authdelivery "github.com/ordo/backend/internal/delivery/http/auth"
+	collabdelivery "github.com/ordo/backend/internal/delivery/http/collab"
+	taskdelivery "github.com/ordo/backend/internal/delivery/http/task"
+	workspacedelivery "github.com/ordo/backend/internal/delivery/http/workspace"
+	"github.com/ordo/backend/internal/infrastructure/config"
+	"github.com/ordo/backend/internal/infrastructure/logging"
+	"github.com/ordo/backend/internal/infrastructure/persistence/memory"
+	"github.com/ordo/backend/internal/infrastructure/security"
+	authusecase "github.com/ordo/backend/internal/usecase/auth"
+	collabusecase "github.com/ordo/backend/internal/usecase/collab"
+	taskusecase "github.com/ordo/backend/internal/usecase/task"
+	workspaceusecase "github.com/ordo/backend/internal/usecase/workspace"
 	"github.com/ordo/backend/internal/infrastructure/config"
 	"github.com/ordo/backend/internal/infrastructure/logging"
 	"go.uber.org/zap"
@@ -33,6 +45,25 @@ func runApplication() error {
 		return fmt.Errorf("logger failure: %w", loggerError)
 	}
 	defer synchronizeLogger(applicationLogger)
+
+	memoryStore := memory.NewStore()
+	tokenService, tokenServiceError := security.NewHMACTokenService(security.WithTokenSecret("integration-secret"))
+	if tokenServiceError != nil {
+		return fmt.Errorf("token service initialization failure: %w", tokenServiceError)
+	}
+	passwordHasher := security.NewSHA256PasswordHasher()
+
+	authService := authusecase.NewService(memoryStore, memoryStore, memoryStore, passwordHasher, tokenService)
+	workspaceService := workspaceusecase.NewService(memoryStore, memoryStore, memoryStore, memoryStore)
+	taskService := taskusecase.NewService(memoryStore, memoryStore, memoryStore)
+	collabService := collabusecase.NewService(memoryStore, memoryStore, memoryStore, memoryStore)
+
+	applicationServer := deliveryhttp.NewServer(applicationConfiguration.HTTPPort, applicationLogger)
+	apiVersionOne := applicationServer.Application().Group("/api/v1")
+	authdelivery.NewHandler(authService).RegisterRoutes(apiVersionOne.Group("/auth"))
+	workspacedelivery.NewHandler(workspaceService).RegisterRoutes(apiVersionOne)
+	taskdelivery.NewHandler(taskService).RegisterRoutes(apiVersionOne)
+	collabdelivery.NewHandler(collabService).RegisterRoutes(apiVersionOne)
 
 	applicationServer := deliveryhttp.NewServer(applicationConfiguration.HTTPPort, applicationLogger)
 	requestContext, cancelFunction := signal.NotifyContext(context.Background(), syscall.SIGINT, syscall.SIGTERM)
