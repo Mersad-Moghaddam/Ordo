@@ -21,6 +21,8 @@ import (
 	collabusecase "github.com/ordo/backend/internal/usecase/collab"
 	taskusecase "github.com/ordo/backend/internal/usecase/task"
 	workspaceusecase "github.com/ordo/backend/internal/usecase/workspace"
+	"github.com/ordo/backend/internal/infrastructure/config"
+	"github.com/ordo/backend/internal/infrastructure/logging"
 	"go.uber.org/zap"
 	"golang.org/x/sync/errgroup"
 )
@@ -63,6 +65,7 @@ func runApplication() error {
 	taskdelivery.NewHandler(taskService).RegisterRoutes(apiVersionOne)
 	collabdelivery.NewHandler(collabService).RegisterRoutes(apiVersionOne)
 
+	applicationServer := deliveryhttp.NewServer(applicationConfiguration.HTTPPort, applicationLogger)
 	requestContext, cancelFunction := signal.NotifyContext(context.Background(), syscall.SIGINT, syscall.SIGTERM)
 	defer cancelFunction()
 
