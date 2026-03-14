@@ -34,3 +34,16 @@ func (applicationServer *Server) Start() error {
 	applicationServer.applicationLog.Info("starting fiber server", zap.String("address", applicationAddress))
 	return applicationServer.fiberApplication.Listen(applicationAddress)
 }
+
+func (applicationServer *Server) Shutdown(requestContext context.Context) error {
+	shutdownCompletion := make(chan error, 1)
+	go func() {
+		shutdownCompletion <- applicationServer.fiberApplication.Shutdown()
+	}()
+	select {
+	case <-requestContext.Done():
+		return requestContext.Err()
+	case shutdownError := <-shutdownCompletion:
+		return shutdownError
+	}
+}

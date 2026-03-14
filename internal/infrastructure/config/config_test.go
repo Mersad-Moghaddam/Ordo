@@ -2,7 +2,7 @@ package config
 
 import "testing"
 
-func TestNewApplicationConfiguration(t *testing.T) {
+func TestNewApplicationConfiguration(testingSuite *testing.T) {
 	testCases := []struct {
 		testName         string
 		options          []Option
@@ -15,7 +15,7 @@ func TestNewApplicationConfiguration(t *testing.T) {
 	}
 
 	for _, testCase := range testCases {
-		t.Run(testCase.testName, func(testingContext *testing.T) {
+		testingSuite.Run(testCase.testName, func(testingContext *testing.T) {
 			applicationConfiguration, configurationError := NewApplicationConfiguration(testCase.options...)
 			if testCase.expectationError {
 				if configurationError == nil {

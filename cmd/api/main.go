@@ -17,7 +17,8 @@ import (
 
 func main() {
 	if applicationError := runApplication(); applicationError != nil {
-		panic(applicationError)
+		_, _ = os.Stderr.WriteString(applicationError.Error())
+		os.Exit(1)
 	}
 }
 
