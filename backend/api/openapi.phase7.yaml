@@ -1,0 +1,29 @@
+openapi: 3.0.3
+info:
+  title: Ordo Finalization API Surface
+  version: 0.8.0
+paths:
+  /health:
+    get:
+      summary: API health probe
+      responses:
+        '200':
+          description: API healthy
+  /metrics:
+    get:
+      summary: API metrics endpoint
+      responses:
+        '200':
+          description: Prometheus metrics payload
+  /internal/worker/health:
+    get:
+      summary: Worker health probe
+      responses:
+        '200':
+          description: Worker healthy
+  /internal/worker/metrics:
+    get:
+      summary: Worker metrics endpoint
+      responses:
+        '200':
+          description: Worker metrics payload
