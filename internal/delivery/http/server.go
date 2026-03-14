@@ -5,10 +5,10 @@ import (
 	"fmt"
 	"time"
 
+	"github.com/gofiber/adaptor/v2"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/recover"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
-	"github.com/valyala/fasthttp/fasthttpadaptor"
 	"go.uber.org/zap"
 )
 
@@ -24,7 +24,7 @@ func NewServer(applicationPort int, applicationLog *zap.Logger) *Server {
 	fiberApplication.Get("/health", func(fiberContext *fiber.Ctx) error {
 		return fiberContext.Status(fiber.StatusOK).JSON(fiber.Map{"status": "ok"})
 	})
-	fiberApplication.All("/metrics", fasthttpadaptor.NewFastHTTPHandler(promhttp.Handler()))
+	fiberApplication.Get("/metrics", adaptor.HTTPHandler(promhttp.Handler()))
 
 	return &Server{fiberApplication: fiberApplication, applicationPort: applicationPort, applicationLog: applicationLog}
 }
