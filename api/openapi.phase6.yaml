@@ -1,0 +1,11 @@
+openapi: 3.0.3
+info:
+  title: Ordo Platform Hardening API
+  version: 0.7.0
+paths:
+  /internal/platform/cache/health:
+    get:
+      summary: Cache and rate-limit subsystem health probe
+      responses:
+        '200':
+          description: Platform hardening subsystem healthy

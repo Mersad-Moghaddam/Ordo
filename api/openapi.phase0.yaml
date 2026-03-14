@@ -1,0 +1,25 @@
+openapi: 3.0.3
+info:
+  title: Ordo API
+  version: 0.1.0
+paths:
+  /health:
+    get:
+      summary: Health probe
+      responses:
+        '200':
+          description: Service healthy
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: ok
+  /metrics:
+    get:
+      summary: Prometheus metrics endpoint
+      responses:
+        '200':
+          description: Metrics payload

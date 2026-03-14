@@ -1,3 +1,4 @@
 node_modules/
 dist/
 *.tsbuildinfo
+EOF && git add -A && git commit --amend -m "refactor: split repo into backend and frontend with integrated UI"
