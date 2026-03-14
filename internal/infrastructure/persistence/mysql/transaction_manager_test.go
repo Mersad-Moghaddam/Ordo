@@ -8,7 +8,7 @@ import (
 	"github.com/DATA-DOG/go-sqlmock"
 )
 
-func TestTransactionManagerWithTransaction(testingSuite *testing.T) {
+func TestTransactionManagerWithTransaction(t *testing.T) {
 	testCases := []struct {
 		testName         string
 		workloadError    error
@@ -19,7 +19,7 @@ func TestTransactionManagerWithTransaction(testingSuite *testing.T) {
 	}
 
 	for _, testCase := range testCases {
-		testingSuite.Run(testCase.testName, func(testingContext *testing.T) {
+		t.Run(testCase.testName, func(testingContext *testing.T) {
 			databaseConnection, sqlMock, mockError := sqlmock.New()
 			if mockError != nil {
 				testingContext.Fatalf("sqlmock create failure: %v", mockError)

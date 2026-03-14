@@ -17,8 +17,7 @@ import (
 
 func main() {
 	if applicationError := runApplication(); applicationError != nil {
-		_, _ = os.Stderr.WriteString(applicationError.Error())
-		os.Exit(1)
+		panic(applicationError)
 	}
 }
 
@@ -32,7 +31,12 @@ func runApplication() error {
 	if loggerError != nil {
 		return fmt.Errorf("logger failure: %w", loggerError)
 	}
-	defer synchronizeLogger(applicationLogger)
+	defer func() {
+		synchronizationError := applicationLogger.Sync()
+		if synchronizationError != nil {
+			_, _ = os.Stderr.WriteString(synchronizationError.Error())
+		}
+	}()
 
 	applicationServer := deliveryhttp.NewServer(applicationConfiguration.HTTPPort, applicationLogger)
 	requestContext, cancelFunction := signal.NotifyContext(context.Background(), syscall.SIGINT, syscall.SIGTERM)
@@ -40,8 +44,7 @@ func runApplication() error {
 
 	applicationErrorGroup, derivedContext := errgroup.WithContext(requestContext)
 	applicationErrorGroup.Go(func() error {
-		serverError := applicationServer.Start()
-		if serverError != nil && !errors.Is(serverError, context.Canceled) {
+		if serverError := applicationServer.Start(); serverError != nil {
 			return fmt.Errorf("fiber startup failure: %w", serverError)
 		}
 		return nil
@@ -49,15 +52,8 @@ func runApplication() error {
 	applicationErrorGroup.Go(func() error {
 		<-derivedContext.Done()
 		applicationLogger.Info("shutdown signal received", zap.String("reason", derivedContext.Err().Error()))
-		return applicationServer.Shutdown(context.Background())
+		return nil
 	})
 
 	return applicationErrorGroup.Wait()
-}
-
-func synchronizeLogger(applicationLogger *zap.Logger) {
-	synchronizationError := applicationLogger.Sync()
-	if synchronizationError != nil {
-		_, _ = os.Stderr.WriteString(synchronizationError.Error())
-	}
 }
