@@ -1,13 +1,15 @@
 ## Summary
-Refined Phase 0 bootstrap by tightening runtime lifecycle behavior and test naming standards while preserving clean architecture boundaries.
+Bootstrap Phase 0 for Ordo with clean architecture scaffolding, strict revive linting, functional configuration patterns, baseline migrations, and CI checks.
 
 ## Key Changes
-- Added explicit HTTP server shutdown support with context-aware termination.
-- Updated API bootstrap to perform graceful shutdown through errgroup coordination and non-panic process exit.
-- Normalized table-driven test function identifier names to comply with strict descriptive naming conventions.
-- Preserved baseline architecture, migrations, sqlc config, lint rules, and CI flow from the initial bootstrap.
+- Added Fiber API entrypoint with `/health` and `/metrics` endpoints.
+- Added strict `revive.toml` rules and Makefile targets (`run`, `test`, `revive`, `migrate`, `sqlc`, `tidy`).
+- Added idempotent MySQL migrations for `users` and `outbox_events`.
+- Added SQLC configuration and initial outbox insert query.
+- Added ADR 0001 documenting architectural choices.
+- Added CI workflow for tests and linting.
 
 ## Validation
-- `go test ./internal/infrastructure/config -cover`
-- `go test ./...` (blocked by environment dependency download restrictions)
-- `make revive` (blocked by missing revive binary in environment)
+- `go test ./... -coverprofile=coverage.out`
+- `go test ./internal/infrastructure/config ./internal/infrastructure/persistence/mysql -cover`
+- `make revive`
