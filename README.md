@@ -22,6 +22,13 @@ Ordo is a split full-stack monorepo with:
     └── vite.config.ts          # Vite configuration
 ```
 
+
+## Repository Hygiene
+
+- Backend runtime/source files live **only** under `backend/`.
+- Frontend runtime/source files live **only** under `frontend/`.
+- The repository root is intentionally kept minimal (workspace-level docs only).
+
 ## Prerequisites
 
 - **Go** 1.22+
