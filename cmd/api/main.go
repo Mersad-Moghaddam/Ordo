@@ -45,7 +45,8 @@ func runApplication() error {
 
 	applicationErrorGroup, derivedContext := errgroup.WithContext(requestContext)
 	applicationErrorGroup.Go(func() error {
-		if serverError := applicationServer.Start(); serverError != nil {
+		serverError := applicationServer.Start()
+		if serverError != nil && !errors.Is(serverError, context.Canceled) {
 			return fmt.Errorf("fiber startup failure: %w", serverError)
 		}
 		return nil
@@ -53,7 +54,7 @@ func runApplication() error {
 	applicationErrorGroup.Go(func() error {
 		<-derivedContext.Done()
 		applicationLogger.Info("shutdown signal received", zap.String("reason", derivedContext.Err().Error()))
-		return nil
+		return applicationServer.Shutdown(context.Background())
 	})
 
 	return applicationErrorGroup.Wait()
