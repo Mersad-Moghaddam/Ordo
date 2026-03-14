@@ -58,3 +58,10 @@ func runApplication() error {
 
 	return applicationErrorGroup.Wait()
 }
+
+func synchronizeLogger(applicationLogger *zap.Logger) {
+	synchronizationError := applicationLogger.Sync()
+	if synchronizationError != nil {
+		_, _ = os.Stderr.WriteString(synchronizationError.Error())
+	}
+}
