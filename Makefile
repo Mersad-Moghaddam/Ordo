@@ -1,6 +1,7 @@
 GO_PACKAGES=$(shell go list ./...)
 
 .PHONY: run test revive migrate sqlc tidy benchmark
+.PHONY: run test revive migrate sqlc tidy
 
 run:
 	go run ./cmd/api
