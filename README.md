@@ -1,9 +1,27 @@
 # Ordo
 
-Ordo is a split full-stack monorepo with:
+Ordo is a full-stack task management monorepo with a Go backend and a modern React frontend. It is structured for maintainability, iterative delivery, and clear separation between API and UI concerns.
 
-- **`backend/`**: Go API service (Fiber) following clean architecture (delivery/usecase/repository/infrastructure), with in-memory adapters for local development and tests.
-- **`frontend/`**: React + TypeScript + Vite client for running core product flows against the API.
+## Why Ordo
+
+- **Clean architecture backend** for long-term maintainability.
+- **Modern TypeScript frontend** with an interactive Jira-style task board/list experience.
+- **Monorepo layout** with isolated backend/frontend workflows and tooling.
+- **Developer-friendly local setup** with focused commands for run, test, lint, and build.
+
+## Tech Stack
+
+### Backend (`backend/`)
+- Go
+- Fiber (HTTP server)
+- Clean architecture layers (`delivery`, `usecase`, `repository`, `infrastructure`)
+- SQL migrations and phased OpenAPI specs
+
+### Frontend (`frontend/`)
+- React 18
+- TypeScript
+- Vite
+- Local-first task workspace UI (board + list views)
 
 ## Repository Structure
 
@@ -11,23 +29,17 @@ Ordo is a split full-stack monorepo with:
 .
 ├── backend/
 │   ├── cmd/api/                # API entrypoint
-│   ├── internal/               # domain, usecases, delivery, infrastructure, repository ports
+│   ├── internal/               # Domain + use cases + delivery + infrastructure
 │   ├── migrations/             # SQL schema migrations
-│   ├── api/                    # phased OpenAPI specs
-│   ├── docs/adr/               # architecture decision records
-│   └── Makefile                # backend dev/test/lint/benchmark commands
-└── frontend/
-    ├── src/                    # React app source
-    ├── package.json            # frontend scripts and dependencies
-    └── vite.config.ts          # Vite configuration
+│   ├── api/                    # OpenAPI specs by phase
+│   ├── docs/adr/               # Architecture Decision Records
+│   └── Makefile                # Backend workflows (run/test/lint/bench)
+├── frontend/
+│   ├── src/                    # React app source
+│   ├── package.json            # Frontend scripts/dependencies
+│   └── vite.config.ts          # Vite configuration
+└── README.md
 ```
-
-
-## Repository Hygiene
-
-- Backend runtime/source files live **only** under `backend/`.
-- Frontend runtime/source files live **only** under `frontend/`.
-- The repository root is intentionally kept minimal (workspace-level docs only).
 
 ## Prerequisites
 
@@ -37,16 +49,16 @@ Ordo is a split full-stack monorepo with:
 
 ## Quick Start
 
-### 1) Run Backend
+### 1) Start the Backend
 
 ```bash
 cd backend
 go run ./cmd/api
 ```
 
-Backend starts on `http://127.0.0.1:8080` by default.
+Backend defaults to `http://127.0.0.1:8080`.
 
-### 2) Run Frontend
+### 2) Start the Frontend
 
 ```bash
 cd frontend
@@ -54,31 +66,48 @@ npm ci
 npm run dev
 ```
 
-Frontend starts on Vite's dev server (usually `http://127.0.0.1:5173`).
+Frontend defaults to `http://127.0.0.1:5173`.
 
-## Backend Commands
+---
 
-From `backend/`:
+## Development Workflows
+
+### Backend Commands
+
+Run from `backend/`:
 
 ```bash
-make run         # run API
-make test        # go test ./...
-make benchmark   # benchmark suite
-make revive      # lint via revive
+make run         # Run API server
+make test        # Execute go test ./...
+make benchmark   # Run benchmark suite
+make revive      # Lint using revive
 make tidy        # go mod tidy
 ```
 
-## Frontend Commands
+### Frontend Commands
 
-From `frontend/`:
+Run from `frontend/`:
 
 ```bash
-npm run dev      # start dev server
-npm run build    # production build
-npm run preview  # preview built app
+npm run dev      # Start Vite dev server
+npm run build    # Type-check + production build
+npm run preview  # Preview production build
 ```
 
-## API Highlights
+## Frontend Capabilities
+
+The current frontend provides a polished, user-friendly task workspace with:
+
+- Board and list view modes
+- Task creation and deletion
+- Status updates and quick move actions
+- Search and filter controls
+- Priority and due-date visual indicators
+- Local persistence for rapid prototyping
+
+## API Surface (Highlights)
+
+Representative backend endpoints include:
 
 - `POST /auth/register`
 - `POST /auth/login`
@@ -87,18 +116,24 @@ npm run preview  # preview built app
 - `GET /health`
 - `GET /metrics`
 
-Use the frontend to exercise end-to-end flows (register → login → workspace/task actions).
+See phased specs under `backend/api/` for endpoint evolution and details.
 
-## Quality and CI
+## Quality Expectations
 
-Backend CI workflow runs tests, linting, and benchmarks. Local validation is recommended before PRs:
+Before opening a PR, run:
 
 ```bash
 cd backend && go test ./...
 cd frontend && npm run build
 ```
 
-## Notes
+## Contribution Notes
 
-- Generated/build artifacts are intentionally excluded from version control (`frontend/dist`, `frontend/node_modules`, `*.tsbuildinfo`).
-- The repository is now cleanly split between backend and frontend concerns.
+- Keep backend runtime/source files inside `backend/`.
+- Keep frontend runtime/source files inside `frontend/`.
+- Avoid committing generated artifacts (`dist/`, `node_modules/`, `*.tsbuildinfo`).
+- Prefer small, focused commits with clear messages.
+
+## License
+
+No license file is currently defined in this repository. Add one before public distribution.
