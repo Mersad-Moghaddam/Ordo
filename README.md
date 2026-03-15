@@ -1,64 +1,63 @@
 # Ordo
 
-Ordo is a full-stack task management monorepo with a Go backend and a modern React frontend. It is structured for maintainability, iterative delivery, and clear separation between API and UI concerns.
+Ordo is a full-stack task management monorepo composed of a Go backend and a React + TypeScript frontend. The project is structured to keep backend and frontend concerns cleanly separated while supporting fast local development.
 
-## Why Ordo
+## Highlights
 
-- **Clean architecture backend** for long-term maintainability.
-- **Modern TypeScript frontend** with an interactive Jira-style task board/list experience.
-- **Monorepo layout** with isolated backend/frontend workflows and tooling.
-- **Developer-friendly local setup** with focused commands for run, test, lint, and build.
+- Clean architecture backend (`delivery`, `usecase`, `repository`, `infrastructure`)
+- Jira-style task workspace frontend (board + list modes)
+- Monorepo-friendly workflows for build, test, lint, and benchmarking
+- ADRs and phased OpenAPI specs for architecture and API evolution
 
-## Tech Stack
+## Technology
 
 ### Backend (`backend/`)
 - Go
-- Fiber (HTTP server)
-- Clean architecture layers (`delivery`, `usecase`, `repository`, `infrastructure`)
-- SQL migrations and phased OpenAPI specs
+- Fiber
+- SQL migrations
+- OpenAPI phase specs
 
 ### Frontend (`frontend/`)
 - React 18
 - TypeScript
 - Vite
-- Local-first task workspace UI (board + list views)
 
-## Repository Structure
+## Repository Layout
 
 ```text
 .
 ├── backend/
 │   ├── cmd/api/                # API entrypoint
-│   ├── internal/               # Domain + use cases + delivery + infrastructure
-│   ├── migrations/             # SQL schema migrations
-│   ├── api/                    # OpenAPI specs by phase
-│   ├── docs/adr/               # Architecture Decision Records
-│   └── Makefile                # Backend workflows (run/test/lint/bench)
+│   ├── internal/               # Domain/usecase/delivery/infrastructure
+│   ├── migrations/             # Backend schema migrations
+│   ├── api/                    # OpenAPI specs
+│   ├── docs/adr/               # Architecture decision records
+│   └── Makefile                # Backend development commands
 ├── frontend/
-│   ├── src/                    # React app source
-│   ├── package.json            # Frontend scripts/dependencies
-│   └── vite.config.ts          # Vite configuration
+│   ├── src/                    # React application source
+│   ├── package.json            # npm scripts + dependencies
+│   └── vite.config.ts          # Vite config
 └── README.md
 ```
 
 ## Prerequisites
 
-- **Go** 1.22+
-- **Node.js** 20+
-- **npm** 10+
+- Go 1.22+
+- Node.js 20+
+- npm 10+
 
 ## Quick Start
 
-### 1) Start the Backend
+### 1) Run backend
 
 ```bash
 cd backend
 go run ./cmd/api
 ```
 
-Backend defaults to `http://127.0.0.1:8080`.
+Backend default: `http://127.0.0.1:8080`
 
-### 2) Start the Frontend
+### 2) Run frontend
 
 ```bash
 cd frontend
@@ -66,48 +65,39 @@ npm ci
 npm run dev
 ```
 
-Frontend defaults to `http://127.0.0.1:5173`.
+Frontend default: `http://127.0.0.1:5173`
 
----
+## Development Commands
 
-## Development Workflows
-
-### Backend Commands
-
-Run from `backend/`:
+### Backend
 
 ```bash
-make run         # Run API server
-make test        # Execute go test ./...
-make benchmark   # Run benchmark suite
-make revive      # Lint using revive
+cd backend
+make run         # start API
+make test        # go test ./...
+make benchmark   # benchmark suite
+make revive      # lint
 make tidy        # go mod tidy
 ```
 
-### Frontend Commands
-
-Run from `frontend/`:
+### Frontend
 
 ```bash
-npm run dev      # Start Vite dev server
-npm run build    # Type-check + production build
-npm run preview  # Preview production build
+cd frontend
+npm run dev      # start dev server
+npm run build    # type-check + build
+npm run preview  # preview production build
 ```
 
-## Frontend Capabilities
+## Frontend Features
 
-The current frontend provides a polished, user-friendly task workspace with:
+- Task creation, deletion, status updates
+- Board and list views
+- Filters by status and priority
+- Search by title/description/assignee
+- Local persistence for iterative prototyping
 
-- Board and list view modes
-- Task creation and deletion
-- Status updates and quick move actions
-- Search and filter controls
-- Priority and due-date visual indicators
-- Local persistence for rapid prototyping
-
-## API Surface (Highlights)
-
-Representative backend endpoints include:
+## API Highlights
 
 - `POST /auth/register`
 - `POST /auth/login`
@@ -116,24 +106,24 @@ Representative backend endpoints include:
 - `GET /health`
 - `GET /metrics`
 
-See phased specs under `backend/api/` for endpoint evolution and details.
+OpenAPI evolution lives under `backend/api/`.
 
-## Quality Expectations
+## Quality Checks
 
-Before opening a PR, run:
+Run before creating a PR:
 
 ```bash
 cd backend && go test ./...
 cd frontend && npm run build
 ```
 
-## Contribution Notes
+## Contribution Guidelines
 
 - Keep backend runtime/source files inside `backend/`.
 - Keep frontend runtime/source files inside `frontend/`.
-- Avoid committing generated artifacts (`dist/`, `node_modules/`, `*.tsbuildinfo`).
-- Prefer small, focused commits with clear messages.
+- Do not commit generated artifacts (`dist/`, `node_modules/`, `*.tsbuildinfo`).
+- Prefer focused, atomic commits.
 
 ## License
 
-No license file is currently defined in this repository. Add one before public distribution.
+No license file is currently defined. Add one before public distribution.

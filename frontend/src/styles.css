@@ -20,7 +20,7 @@ body {
 
 .sidebar {
   background: linear-gradient(180deg, #0747a6, #0052cc);
-  color: white;
+  color: #fff;
   padding: 1.2rem 1rem;
 }
 
@@ -168,7 +168,9 @@ h1 {
   padding: 0.9rem;
 }
 
-h3, h4, h5 {
+h3,
+h4,
+h5 {
   margin: 0;
 }
 
@@ -310,14 +312,40 @@ button {
   font-weight: 700;
 }
 
-.pill.low { background: #e3fcef; color: #006644; }
-.pill.medium { background: #deebff; color: #0747a6; }
-.pill.high { background: #fffae6; color: #ff8b00; }
-.pill.critical { background: #ffebe6; color: #de350b; }
+.pill.low {
+  background: #e3fcef;
+  color: #006644;
+}
 
-.overdue { color: #de350b; font-weight: 700; }
-.upcoming { color: #0747a6; font-weight: 700; }
-.neutral { color: #36b37e; font-weight: 700; }
+.pill.medium {
+  background: #deebff;
+  color: #0747a6;
+}
+
+.pill.high {
+  background: #fffae6;
+  color: #ff8b00;
+}
+
+.pill.critical {
+  background: #ffebe6;
+  color: #de350b;
+}
+
+.overdue {
+  color: #de350b;
+  font-weight: 700;
+}
+
+.upcoming {
+  color: #0747a6;
+  font-weight: 700;
+}
+
+.neutral {
+  color: #36b37e;
+  font-weight: 700;
+}
 
 .danger {
   background: #de350b;
@@ -359,15 +387,19 @@ button {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
+  .topbar,
+  .toolbar,
   .form-row,
   .filters,
-  .task-actions,
   .task-meta,
-  .toolbar,
-  .topbar {
-    grid-template-columns: 1fr;
+  .task-actions {
     flex-direction: column;
     align-items: stretch;
+  }
+
+  .form-row {
+    display: grid;
+    grid-template-columns: 1fr;
   }
 
   .toolbar input {
