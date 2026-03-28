@@ -12,7 +12,7 @@ The main page includes forms for **all backend routes/features**: auth refresh, 
 
 - React 18 + TypeScript
 - Vite
-- React Router
+- Simple SPA path router (no extra dependency)
 - Reusable component-based UI
 - Responsive production-style CSS
 

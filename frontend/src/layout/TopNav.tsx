@@ -1,9 +1,7 @@
-import { NavigateFunction } from 'react-router-dom'
-
 interface TopNavProps {
   apiBase: string
   onApiBaseChange: (value: string) => void
-  onNavigate: NavigateFunction
+  onNavigate: (path: '/login' | '/signup' | '/main') => void
 }
 
 export function TopNav({ apiBase, onApiBaseChange, onNavigate }: TopNavProps) {
@@ -11,7 +9,7 @@ export function TopNav({ apiBase, onApiBaseChange, onNavigate }: TopNavProps) {
     <header className="top-nav">
       <div>
         <h1>Ordo Command Center</h1>
-        <p>Jira-style workflow pages: Login → Create Account → Main operations.</p>
+        <p>Login → Create Account → Main operations workflow.</p>
       </div>
       <label className="field api-field">
         <span>API Base</span>
