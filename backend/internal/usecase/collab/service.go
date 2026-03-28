@@ -137,7 +137,6 @@ func (service *Service) ListTaskActivities(requestContext context.Context, taskI
 	}
 	return usecase.PageResult[domaincollab.ActivityLog]{Items: activityList, TotalCount: totalCount, PageNumber: pageNumber, PageSize: pageSize}, nil
 }
-
 func (service *Service) persistCommentCreated(requestContext context.Context, comment domaincollab.Comment) error {
 	if createError := service.commentRepository.CreateComment(requestContext, comment); createError != nil {
 		return createError
