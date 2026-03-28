@@ -1,0 +1,75 @@
+:root {
+  color-scheme: dark;
+  --bg: #0b1220;
+  --panel: #121b2d;
+  --panel-2: #1a263e;
+  --text: #ecf3ff;
+  --muted: #9fb0d3;
+  --accent: #4f8cff;
+  --danger: #f05b6f;
+}
+
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: Inter, system-ui, -apple-system, Segoe UI, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+}
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem 1.5rem;
+  position: sticky;
+  top: 0;
+  background: #0a111fdd;
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid #23344f;
+}
+#top-nav { display: flex; gap: .5rem; flex-wrap: wrap; }
+#top-nav button {
+  border: 1px solid #355180;
+  background: transparent;
+  color: var(--text);
+  border-radius: 999px;
+  padding: .45rem .9rem;
+  cursor: pointer;
+}
+main { padding: 1rem 1.5rem; }
+.grid { display: grid; gap: 1rem; margin-bottom: 1rem; }
+.two-col { grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
+.three-col { grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); }
+.card {
+  background: linear-gradient(180deg, var(--panel), var(--panel-2));
+  border: 1px solid #253754;
+  border-radius: 12px;
+  padding: 1rem;
+}
+.stack { display: flex; flex-direction: column; gap: .5rem; }
+.separated { margin-top: .75rem; padding-top: .75rem; border-top: 1px solid #2d4162; }
+input, select, textarea, button {
+  width: 100%;
+  border-radius: 8px;
+  border: 1px solid #355180;
+  background: #0e1729;
+  color: var(--text);
+  padding: .5rem .6rem;
+}
+button { background: var(--accent); border: none; font-weight: 600; cursor: pointer; }
+button.secondary { background: #374b70; margin-top: .5rem; }
+button.danger { background: var(--danger); }
+label { display: flex; flex-direction: column; gap: .25rem; font-size: .9rem; }
+.hint { color: var(--muted); margin-top: 0; }
+.output-wrap { margin: 1rem 1.5rem 2rem; }
+pre {
+  background: #090f1c;
+  border: 1px solid #24395d;
+  border-radius: 10px;
+  padding: 1rem;
+  min-height: 120px;
+  max-height: 360px;
+  overflow: auto;
+  white-space: pre-wrap;
+}
