@@ -1,46 +1,64 @@
-# Ordo Frontend
+# Ordo Frontend (Production-style UI)
 
-Single-page frontend for the Ordo backend API.
+A **React + TypeScript + Vite** frontend that fully maps to the current backend API surface:
 
-## Features covered
+- Auth (register/login/refresh)
+- Workspace and memberships
+- Projects
+- Tasks and status transitions
+- Comments and activity feed
+- Admin operations overview
 
-- **Authentication pages**: Sign In, Sign Up, token refresh.
-- **Main dashboard**: workspace/project/task/comment/activity forms.
-- **Admin page**: centralized admin overview and operations guidance.
-- **API response viewer**: live JSON output for every action.
+## Tech stack
 
-## Run locally
+- React 18
+- TypeScript (strict)
+- Vite
+- ESLint
+- Lucide icons
+- Responsive CSS design system (custom)
 
-This frontend is static and does not require a build step.
+## Quick start
 
 ```bash
 cd frontend
-python3 -m http.server 4173
+npm install
+npm run dev
 ```
 
-Then open: <http://localhost:4173>
+App runs on `http://localhost:4173` by default.
 
-By default, API calls go to:
+## Production build
 
-- `http://localhost:8080/api/v1`
+```bash
+npm run build
+npm run preview
+```
 
-You can change the API base URL in the top navbar.
+## Backend mapping
 
-## Backend endpoints wired
+The UI includes forms wired to all backend endpoints exposed in:
 
-- `POST /auth/register`
-- `POST /auth/login`
-- `POST /auth/refresh`
-- `POST /workspaces`
-- `POST /workspaces/:workspaceId/memberships`
-- `POST /workspaces/:workspaceId/projects`
-- `GET /users/:userId/workspaces`
-- `GET /workspaces/:workspaceId/projects`
-- `POST /tasks`
-- `PATCH /tasks/:taskId/status`
-- `GET /projects/:projectId/tasks`
-- `POST /comments`
-- `PATCH /comments/:commentId`
-- `DELETE /comments/:commentId`
-- `GET /tasks/:taskId/comments`
-- `GET /tasks/:taskId/activities`
+- `/auth/register`
+- `/auth/login`
+- `/auth/refresh`
+- `/workspaces`
+- `/workspaces/:workspaceId/memberships`
+- `/workspaces/:workspaceId/projects`
+- `/users/:userId/workspaces`
+- `/workspaces/:workspaceId/projects` (GET)
+- `/tasks`
+- `/tasks/:taskId/status`
+- `/projects/:projectId/tasks`
+- `/comments`
+- `/comments/:commentId` (PATCH, DELETE)
+- `/tasks/:taskId/comments`
+- `/tasks/:taskId/activities`
+
+## UX highlights
+
+- API base URL switcher in top navigation
+- Session token persistence
+- Dedicated sections for Auth / Workspace / Tasks / Collaboration / Admin
+- Structured JSON response console for all actions
+- Mobile-friendly adaptive layout
