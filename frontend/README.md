@@ -1,24 +1,22 @@
-# Ordo Frontend (Production-style UI)
+# Ordo Frontend (Jira-style flow)
 
-A **React + TypeScript + Vite** frontend that fully maps to the current backend API surface:
+This frontend now follows a clear page flow:
 
-- Auth (register/login/refresh)
-- Workspace and memberships
-- Projects
-- Tasks and status transitions
-- Comments and activity feed
-- Admin operations overview
+1. **Login page** (`/login`)
+2. **Create Account page** (`/signup`) from "Create Account" button
+3. **Main page** (`/main`) after successful login/signup
 
-## Tech stack
+The main page includes forms for **all backend routes/features**: auth refresh, workspaces, memberships, projects, tasks, comments, and activities.
 
-- React 18
-- TypeScript (strict)
+## Tech
+
+- React 18 + TypeScript
 - Vite
-- ESLint
-- Lucide icons
-- Responsive CSS design system (custom)
+- React Router
+- Reusable component-based UI
+- Responsive production-style CSS
 
-## Quick start
+## Run
 
 ```bash
 cd frontend
@@ -26,39 +24,27 @@ npm install
 npm run dev
 ```
 
-App runs on `http://localhost:4173` by default.
-
-## Production build
+## Build
 
 ```bash
 npm run build
-npm run preview
 ```
 
-## Backend mapping
+## Route coverage in UI
 
-The UI includes forms wired to all backend endpoints exposed in:
-
-- `/auth/register`
-- `/auth/login`
-- `/auth/refresh`
-- `/workspaces`
-- `/workspaces/:workspaceId/memberships`
-- `/workspaces/:workspaceId/projects`
-- `/users/:userId/workspaces`
-- `/workspaces/:workspaceId/projects` (GET)
-- `/tasks`
-- `/tasks/:taskId/status`
-- `/projects/:projectId/tasks`
-- `/comments`
-- `/comments/:commentId` (PATCH, DELETE)
-- `/tasks/:taskId/comments`
-- `/tasks/:taskId/activities`
-
-## UX highlights
-
-- API base URL switcher in top navigation
-- Session token persistence
-- Dedicated sections for Auth / Workspace / Tasks / Collaboration / Admin
-- Structured JSON response console for all actions
-- Mobile-friendly adaptive layout
+- `POST /auth/register`
+- `POST /auth/login`
+- `POST /auth/refresh`
+- `POST /workspaces`
+- `POST /workspaces/:workspaceId/memberships`
+- `POST /workspaces/:workspaceId/projects`
+- `GET /users/:userId/workspaces`
+- `GET /workspaces/:workspaceId/projects`
+- `POST /tasks`
+- `PATCH /tasks/:taskId/status`
+- `GET /projects/:projectId/tasks`
+- `POST /comments`
+- `PATCH /comments/:commentId`
+- `DELETE /comments/:commentId`
+- `GET /tasks/:taskId/comments`
+- `GET /tasks/:taskId/activities`
